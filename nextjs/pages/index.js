@@ -43,7 +43,6 @@ export default function Home() {
           min="0"
         />
         <button
-          id="calculate-main"
           onClick={() => {
             // The next line never executes because this entire function is one task
             // only the last value for the textcontent of the place fibResult goes is considered
@@ -58,7 +57,6 @@ export default function Home() {
           Calculate on the main thread
         </button>
         <button
-          id="calculate-worker"
           onClick={() => {
             const num = Number(inputNum);
             setFibResult("Calculating");
@@ -69,13 +67,13 @@ export default function Home() {
         </button>
         <p>
           Answer:
-          <output id="fib-output">{fibResult}</output>
+          <output>{fibResult}</output>
         </p>
         <h2>Generate a number while calculating</h2>
-        <button id="random-btn" onClick={() => setRandomNum(Math.random())}>
+        <button onClick={() => setRandomNum(Math.random())}>
           Generate random number
         </button>
-        <output id="random-output">{randomNum}</output>
+        <output>{randomNum}</output>
         <div className={styles["lorem-container"]}>
           <h2>Select text while calculating</h2>
           <p>
