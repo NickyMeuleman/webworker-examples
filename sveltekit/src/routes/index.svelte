@@ -1,7 +1,6 @@
 <script>
   import { onMount } from "svelte";
   import { fibonacci } from "../utils.js";
-  import WorkerFactory from "../worker.js?worker";
 
   let inputNum = 42;
   let fibResult = "None yet";
@@ -9,14 +8,9 @@
   let worker = null;
 
   onMount(() => {
-    // This syntax will fail (in Vite 2) because new URL(url, import.meta.url) is not supported in SSR.
-    // worker = new Worker(new URL("../worker.js", import.meta.url), {
-    //   type: "module",
-    // });
-    // instead, use the custom Vite syntax where you import the worker file and append ?worker
-    // This is equivalent, so the workertype is automatically "module" using this syntax
-    // https://vitejs.dev/guide/features.html#import-with-query-suffixes
-    worker = new WorkerFactory();
+    worker = new Worker(new URL("../worker.js", import.meta.url), {
+      type: "module",
+    });
     worker.addEventListener("message", (msg) => {
       fibResult = msg.data;
     });
@@ -41,15 +35,14 @@
   }
 </script>
 
+<svelte:head>
+  <title>SvelteKit webworkers example</title>
+</svelte:head>
 <h2>Calculate the N-th Fibonnaci number</h2>
 <label for="fib-input"> N-th </label>
 <input id="fib-input" type="number" bind:value={inputNum} min="0" />
-<button on:click={calculateMain}
-  >Calculate on the main thread</button
->
-<button on:click={calculateWorker}
-  >Calculate in a web worker</button
->
+<button on:click={calculateMain}>Calculate on the main thread</button>
+<button on:click={calculateWorker}>Calculate in a web worker</button>
 <p>
   Answer:
   <output>{fibResult}</output>
